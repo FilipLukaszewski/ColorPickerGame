@@ -113,6 +113,8 @@ npm run dev -- --host
 
 If everything is configured correctly, here is exactly what you should see across your terminals and browser.
 
+> ⚠️ **WARNING:** Make sure you're using Chrome browser. Firefox has stricter rules that break the project.
+
 ### In Terminal 1 (Backend/Server)
 Once `ts-node-dev` compiles and starts the server, the terminal output should look like this:
 ```text
