@@ -13,37 +13,26 @@ function App() {
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
-    // 1. Test REST API
-    axios.get(`${BACKEND_URL}/api/health`)
-      .then(res => setStatus(`Server & DB: ${res.data.status}`))
-      .catch(() => setStatus('Server Offline'));
+    const checkHealth = async () => {
+      try {
+        const res = await axios.get(`${BACKEND_URL}/api/health`);
+        setStatus(`Server & DB: ${res.data.status}`);
+      } catch (err) {
+        setStatus('Server Offline or DB Error');
+        console.error("Health check failed:", err);
+      }
+    };
 
-    // 2. Test Socket.IO
+    checkHealth();
+
+    socket.on('connect', () => console.log('Connected:', socket.id));
     socket.on('server-ready', (data) => setMsg(data));
-
-    return () => { socket.off('server-ready'); };
-  }, []);
-
-  useEffect(() => {
-    // Listen for the initial connection
-    socket.on('connect', () => {
-      console.log('Connected to server with ID:', socket.id);
-    });
-
-    // THE MOST IMPORTANT ONE: Catch connection errors
-    socket.on('connect_error', (err) => {
-      console.error('Connection Error:', err.message);
-      // If it says "xhr poll error", it's almost always a network/firewall block.
-    });
-
-    socket.on('disconnect', (reason) => {
-      console.warn('Disconnected:', reason);
-    });
+    socket.on('connect_error', (err) => console.error('Socket Error:', err.message));
 
     return () => {
       socket.off('connect');
+      socket.off('server-ready');
       socket.off('connect_error');
-      socket.off('disconnect');
     };
   }, []);
 
