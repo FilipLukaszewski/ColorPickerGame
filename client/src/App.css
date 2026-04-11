@@ -2,7 +2,7 @@
   --bg-color: #0f172a;
   --card-bg: #1e293b;
   --accent-color: #38bdf8;
-  --text-main: #ffffff; /* Pure white for better readability */
+  --text-main: #ffffff;
   --text-muted: #94a3b8;
 }
 
@@ -14,14 +14,13 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* Navbar Tweaks */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: 60px;
-  background: #1e293b; /* Solid dark background */
+  background: #1e293b;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -45,7 +44,7 @@ body {
 }
 
 .nav-item {
-  color: #ffffff; /* White text for links */
+  color: #ffffff;
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
@@ -58,13 +57,12 @@ body {
   color: var(--accent-color);
 }
 
-/* Centering Logic */
 .page-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Full viewport height */
-  padding-top: 60px; /* Offset for the navbar */
+  min-height: 100vh;
+  padding-top: 60px;
   box-sizing: border-box;
 }
 
@@ -101,12 +99,11 @@ body {
 }
 
 .docs-container {
-  max-width: 900px; /* Wider for the technical content */
-  text-align: left; /* Essential override */
-  padding: 3rem 4rem; /* More breathing room */
+  max-width: 900px;
+  text-align: left;
+  padding: 3rem 4rem;
 }
 
-/* Ensure headings align left and have colors */
 .docs-container h1 {
   text-align: left;
   margin-bottom: 1rem;
@@ -124,14 +121,13 @@ body {
 }
 
 .docs-container h3 {
-  color: #818cf8; /* Light purple for subheaders */
+  color: #818cf8;
   font-size: 1.1rem;
   margin-top: 1.5rem;
 }
 
-/* The Code Block Fix */
 .docs-container pre {
-  background: #0f172a; /* Darker than the card */
+  background: #0f172a;
   padding: 1.2rem;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -144,8 +140,8 @@ body {
   font-size: 0.9rem;
   line-height: 1.5;
   color: #e2e8f0;
-  white-space: pre; /* This preserves the line breaks from your JSX */
-  display: block;   /* Makes the block behave correctly */
+  white-space: pre;
+  display: block;
 }
 
 .docs-container ol, .docs-container ul {
