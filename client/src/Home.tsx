@@ -38,7 +38,7 @@ const Home = () => {
     });
     socket.on('start-game', ({ roomId }) => {
       setJoined(true);
-      navigate(`/game/${roomId}`);
+      navigate(`/game/${roomId}`, { state: { username: input } });
     });
 
     return () => {
@@ -48,6 +48,7 @@ const Home = () => {
 
   const joinWaitingRoom = () => {
     if (!input.trim() || !socketRef.current) return;
+    localStorage.setItem('username', input.trim());
     setJoined(true);
     socketRef.current.emit('join-queue', input.trim());
   };

@@ -36,26 +36,30 @@ You will need PostgreSQL installed and running. We will use pgAdmin to create th
 2. Copy, paste, and run (F5 or the Play button) the following SQL script to create the required `players` and `game` tables:
 
 ```sql
--- Create the players table
+-- Create the players table (lobby queue)
 CREATE TABLE players (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create the game table
 CREATE TABLE game (
     id SERIAL PRIMARY KEY,
-    player1_id INT REFERENCES players(id),
-    player2_id INT REFERENCES players(id),
-    player1_points INT DEFAULT 0,
-    player2_points INT DEFAULT 0,
-    number_of_rounds INT NOT NULL,
+    number_of_rounds INT NOT NULL CHECK (number_of_rounds > 0 AND number_of_rounds <= 20),
     current_round INT DEFAULT 1,
-    color_to_guess VARCHAR(7), -- Format: #RRGGBB
-    winner_id INT REFERENCES players(id),
-    status VARCHAR(20) DEFAULT 'waiting', -- e.g., 'waiting', 'in_progress', 'finished'
+    color_to_guess VARCHAR(7),
+    status VARCHAR(20) DEFAULT 'waiting' CHECK (status IN ('waiting', 'in_progress', 'finished')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create the game_players table
+CREATE TABLE game_players (
+    id SERIAL PRIMARY KEY,
+    game_id INT REFERENCES game(id) ON DELETE CASCADE,
+    username VARCHAR(50) NOT NULL,
+    points INT DEFAULT 0,
+    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
