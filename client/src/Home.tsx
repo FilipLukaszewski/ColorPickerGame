@@ -9,13 +9,11 @@ const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const Home = () => {
   const [status, setStatus] = useState('Connecting...');
   const [msg, setMsg] = useState('Waiting for server heartbeat...');
-
-  const [input, setInput] = useState('')
-  const [users, setUsers] = useState<any[]>([]) 
-  const [joined, setJoined] = useState(false)
+  const [input, setInput] = useState('');
+  const [users, setUsers] = useState<any[]>([]);
+  const [joined, setJoined] = useState(false);
 
   const socketRef = useRef<ReturnType<typeof io> | null>(null);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,19 +21,28 @@ const Home = () => {
     socketRef.current = socket;
 
     axios.get(`${BACKEND_URL}/api/health`)
-    .then(() => setStatus('Online'))
-    .catch(() => setStatus('Offline'));
+      .then(() => setStatus('Online'))
+      .catch(() => setStatus('Offline'));
 
     socket.on('connect', () => console.log('Connected:', socket.id));
     socket.on('server-ready', (data) => setMsg(data));
     socket.on('connect_error', (err) => console.error('Socket Error:', err.message));
+
+    // Initial sync of current queue
     socket.on('player-list', (existingPlayers) => setUsers(existingPlayers));
+
+    // Add individual player to local list
     socket.on('player-joined', (newPlayer) => setUsers((prev) => [...prev, newPlayer]));
+
+    // Remove player by username on disconnect/match
     socket.on('player-left', ({ username }) => setUsers((prev) => prev.filter((u) => u.username !== username)));
+
     socket.on('join-error', (msg) => {
       alert(msg);
       setJoined(false);
     });
+
+    // Navigate to room and pass username via state
     socket.on('start-game', ({ roomId }) => {
       setJoined(true);
       navigate(`/game/${roomId}`, { state: { username: input } });
@@ -48,8 +55,12 @@ const Home = () => {
 
   const joinWaitingRoom = () => {
     if (!input.trim() || !socketRef.current) return;
+
+    // Cache username for refresh persistence
     localStorage.setItem('username', input.trim());
     setJoined(true);
+
+    // Enter matchmaking queue
     socketRef.current.emit('join-queue', input.trim());
   };
 
