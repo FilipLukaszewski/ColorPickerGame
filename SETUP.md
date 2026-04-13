@@ -117,8 +117,6 @@ npm run dev -- --host
 
 If everything is configured correctly, here is exactly what you should see across your terminals and browser.
 
-> ⚠️ **WARNING:** Make sure you're using Chrome browser. Firefox has stricter rules that break the project.
-
 ### In Terminal 1 (Backend/Server)
 Once `ts-node-dev` compiles and starts the server, the terminal output should look like this:
 ```text
@@ -128,6 +126,11 @@ Server running on http://0.0.0.0:3000
 *When a player opens the app in their browser, you should also see:*
 ```text
 User connected: <random-socket-id-string>
+```
+*When both players successfully join the lobby:*
+```text
+User `username1` (<random-socket-id-string1>) ready in room <random-room-id>. Players: 2/2
+User `username2` (<random-socket-id-string2>) ready in room <random-room-id>. Players: 2/2
 ```
 
 ### In Terminal 2 (Frontend/Client)
@@ -143,8 +146,8 @@ Vite will output its standard startup text, highlighting the Network URL.
 ### In the Browser (The React App)
 When you (and Player 2) navigate to the Network URL, the React application will load. Based on the initial setup, you should see the following text rendered on the screen:
 
-* **Color Guessing Game** (The main heading)
-* **Status: Server & DB: ok** (This confirms the React frontend successfully hit the `/api/health` Express route, and Express successfully queried the PostgreSQL database).
+* **Navbar** (With 'Color guessr' title, 'play' and 'docs' references that direct to the lobby and documentation, respectively)
+* **Status: Online** (This confirms the React frontend successfully hit the `/api/health` Express route, and Express successfully queried the PostgreSQL database).
 * **Socket Message: Connected to Game Server** (This confirms the Socket.IO bidirectional connection is active and the server successfully emitted its welcome event).
 
 **Troubleshooting via Browser Console:** If the status says "Connecting..." or "Server Offline", right-click the page, select **Inspect**, and check the **Console** and **Network** tabs. 
