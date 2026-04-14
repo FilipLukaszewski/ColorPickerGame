@@ -209,7 +209,7 @@ function Game() {
     return (
       <div className="game-container">
         <div className="winner-banner">
-          {isWinner ? '${finalData.winner} wins!`}
+          {isWinner ? '🏆 You Win!' : `🎉 ${finalData.winner} Wins!`}
         </div>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1rem' }}>
           Final Scores
